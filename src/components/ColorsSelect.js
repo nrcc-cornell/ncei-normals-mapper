@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@mui/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 import InputParamsContext from './InputParamsContext';
 import { infoText } from '../utilities/constants';
 
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 const ColorsSelect = () => {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [ colorCount, setColorCount ] = useState(0);
-	const [ cmp, setCmp ] = useState('Blues');
+	const [ cmp, setCmp ] = useState('Jet');
 	const [ colorError, setColorError ] = useState(false);
 	const classes = useStyles();
 	const inputContext = useContext(InputParamsContext);
@@ -95,7 +95,7 @@ const ColorsSelect = () => {
 				setColorError(false);
 			} else {
 				inputContext.updateInputParams({image: {...inputContext.inputParams.image, cmap: []}});
-				setCmp('Blues');
+				setCmp('Jet');
 				setColorError(levelLength === 1 ? false : true);
 			}
 		}

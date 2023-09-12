@@ -1,11 +1,11 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import Button from '@material-ui/core/Button';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { makeStyles } from '@mui/styles';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ElementSelect from './ElementSelect';
 import DateSelect from './DateSelect';
 import AreaSelect from './AreaSelect';
@@ -68,7 +68,11 @@ const OptionsSelection = (props) => {
 			>
 				<div className={classes.drawerHeader}>
 					<Tooltip title="Close options selection">
-						<IconButton className={classes.menuButton} aria-label="close options selection" onClick={handleDrawerClose}>
+						<IconButton
+							className={classes.menuButton}
+							aria-label="close options selection"
+							onClick={handleDrawerClose}
+							size="large">
 							<ChevronLeftIcon />
 						</IconButton>
 					</Tooltip>
@@ -86,8 +90,8 @@ const OptionsSelection = (props) => {
 					</Button>
 				</Tooltip>
 			</Drawer>
-		</>
+    	</>
 	)
-}
+};
 
 export default OptionsSelection;

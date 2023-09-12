@@ -3,7 +3,6 @@ import React from "react";
 const downloadFetch = (stringparams) => {
 		const jsonparams = JSON.parse(stringparams);
 		const submitParams = JSON.stringify({...jsonparams, output:"json"});
-		console.log)(submitParams);
 		fetch("https://grid2.rcc-acis.org/GridData", {body: submitParams, method: "POST"})
 			.then(response => {
 				if (!response.ok) {

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import Button from '@material-ui/core/Button';
-import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Button from '@mui/material/Button';
+import { makeStyles } from "@mui/styles";
 import { elementNames } from '../utilities/constants';
 import { downloadFetch } from '../utilities/utils';
 import DisplayRequest from './DisplayRequest';

@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import CircularProgress from "@material-ui/core/CircularProgress";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import CircularProgress from "@mui/material/CircularProgress";
 import InputParamsContext from './InputParamsContext';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/styles';
 import { checkBbox } from '../utilities/utils';
 
 const useStyles = makeStyles((theme) => ({
@@ -105,54 +105,54 @@ const SubstateSelect = (props) => {
 	
 	return (
         <>
-        {counties &&
-            <>
-            <List className={classes.listContainer} aria-label={stateType+" selection"}>
-                <ListItem
-                    button
-                    className={classes.listItem}
-                    aria-haspopup="true"
-                    aria-controls={stateType+"-menu"}
-                    aria-label={"selected "+stateType}
-                    onClick={handleClickListItem}
-                >
-                    <ListItemText 
-                        primary={"Click to select "+stateType} 
-                        secondary={counties[selectedIndex] ? "Selected: "+counties[selectedIndex].name.replace(/County|Parish/,"") : ""} 
-                    />
-                </ListItem>
-            </List>
-            <Menu
-                id={stateType+"-menu"}
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose} 
-            >
-                {counties.map((option, index) => (
-                    <MenuItem
-                        key={option.id}
-                        selected={index === selectedIndex}
-                        onClick={(event) => handleMenuItemClick(event, index)}
-                        
+            {counties &&
+                <>
+                <List className={classes.listContainer} aria-label={stateType+" selection"}>
+                    <ListItem
+                        button
+                        className={classes.listItem}
+                        aria-haspopup="true"
+                        aria-controls={stateType+"-menu"}
+                        aria-label={"selected "+stateType}
+                        onClick={handleClickListItem}
                     >
-                        {option.name.replace(/County|Parish/gi,"")}
-                    </MenuItem>
-                ))}
-            </Menu>
-            </>
-        }
-        {loading &&
-            <div className={classes.progressContainer}>
-                <CircularProgress size="1em" />
-                <p className={classes.progressText}>Loading</p>
-            </div>
-        }
-        {fetchError &&
-            <p>{fetchError}</p>
-        }
+                        <ListItemText 
+                            primary={"Click to select "+stateType} 
+                            secondary={counties[selectedIndex] ? "Selected: "+counties[selectedIndex].name.replace(/County|Parish/,"") : ""} 
+                        />
+                    </ListItem>
+                </List>
+                <Menu
+                    id={stateType+"-menu"}
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose} 
+                >
+                    {counties.map((option, index) => (
+                        <MenuItem
+                            key={option.id}
+                            selected={index === selectedIndex}
+                            onClick={(event) => handleMenuItemClick(event, index)}
+                            
+                        >
+                            {option.name.replace(/County|Parish/gi,"")}
+                        </MenuItem>
+                    ))}
+                </Menu>
+                </>
+            }
+            {loading &&
+                <div className={classes.progressContainer}>
+                    <CircularProgress size="1em" />
+                    <p className={classes.progressText}>Loading</p>
+                </div>
+            }
+            {fetchError &&
+                <p>{fetchError}</p>
+            }
         </>
-	);
+    )
  };
 
 export default SubstateSelect;

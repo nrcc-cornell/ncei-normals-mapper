@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import { makeStyles } from '@material-ui/core/styles';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl from '@mui/material/FormControl';
+import { makeStyles } from '@mui/styles';
 import InfoAdornment from './InfoAdornment';
 import { infoText } from '../utilities/constants';
 import InputParamsContext from './InputParamsContext';

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { makeStyles, useTheme } from '@mui/styles';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Banner from './Banner';
 import OptionsSelection from './OptionsSelection';
 import GetResults from './GetResults';
@@ -53,7 +53,7 @@ const Main = () => {
   const [levels, setLevels] = useState(default_levels);
   const [colors, setColors] = useState(default_colors);
   const theme = useTheme();
-	const smallScreen = useMediaQuery(theme.breakpoints.down('sm'))
+	const smallScreen = useMediaQuery(theme.breakpoints.down('md'))
   const [open, setOpen] = useState(!smallScreen);
 
   const handleDrawerOpen = () => {

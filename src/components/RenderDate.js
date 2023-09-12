@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import { makeStyles } from '@mui/styles';
 import InputParamsContext from './InputParamsContext';
 import { months } from '../utilities/constants';
 

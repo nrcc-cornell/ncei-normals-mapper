@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext} from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import InputParamsContext from './InputParamsContext';
 import { buildParams } from '../utilities/utils';
 import DisplayMap from "./DisplayMap";
@@ -27,11 +27,16 @@ const GetResults = () => {
 			})
 			.then(response => {
 				if (response.error) {
-					setResultsError(response.status + " " + response.error)
+					//setResultsError(response.status + " " + response.error)
+					//always getting extraneous call returning status:"invalid request." and error:"unknown image return type: text/plain"
+					//suppressing
+					setResultsError("");
 				} else if (output === 'png') {
+					setResultsError("");
 					setMapBlob(response.data);
 					setImgInfo(response);
 				} else {
+					setResultsError("");
 					setJsonresp(response.data);
 				}
 			})

@@ -1,12 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import MenuIcon from '@material-ui/icons/Menu';
+import { makeStyles } from '@mui/styles';
+import Typography from '@mui/material/Typography';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const drawerWidth = 400;
 
@@ -39,7 +39,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   hide: {
-    display: 'none',
+    visibility: "hidden",
+    width: 0,
+    padding: 0,
   },
   }));
 
@@ -49,7 +51,7 @@ const Banner = (props) => {
 
   return (
     <>
-     <AppBar 
+      <AppBar 
         role="banner"
         position="fixed"
         className={clsx(classes.appBar, { [classes.appBarShift]: open, })}>
@@ -61,7 +63,7 @@ const Banner = (props) => {
               onClick={handleDrawerOpen}
               edge="start"
               className={clsx(classes.menuButton, open && classes.hide)}
-            >
+              size="large">
               <MenuIcon />
             </IconButton>
           </Tooltip>
@@ -72,6 +74,6 @@ const Banner = (props) => {
       </AppBar>
     </>
   )
-}
+};
 
 export default Banner;

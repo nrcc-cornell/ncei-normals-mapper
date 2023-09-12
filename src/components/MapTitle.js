@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
 import InputParamsContext from './InputParamsContext';
 import { elementNames, months } from '../utilities/constants';
 
