@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
 const DisplayRequest = (props) => {
     const { submittedParams } = props;
 	const classes = useStyles();
-	const paramsString = JSON.stringify(submittedParams, null, 2);
+	let paramsString = JSON.stringify(submittedParams, null, 2);
+	paramsString = paramsString.replace("png","image");			// stop gap; should be changed upstream
 
 	return (
 		<>
