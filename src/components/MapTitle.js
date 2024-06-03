@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 import { elementNames, months } from '../utilities/constants';
@@ -11,27 +11,26 @@ const useStyles = makeStyles((theme) => ({
 
 const MapTitle = (props) => {
 	const { submittedParams, inputParams } = props;
+	const [ same, setSame ] = useState(true)
 	const classes = useStyles();
 	const selectedElem = submittedParams.elems[0].hasOwnProperty('elem') ? submittedParams.elems[0].elem.name : submittedParams.elems[0].name;
 	const selectedDuration = submittedParams.elems[0].duration;
 	const selectedInterval = submittedParams.elems[0].interval.length === 3 ? 'Daily ' : 'Monthly ';
 	const selectedUnits = submittedParams.elems[0].interval.length === 3 ? "days" : "months";
 	const selectedName = elementNames()[selectedElem];
+	const [,smn,sdy] = inputParams.sdate.split("-");
+	const [,emn,edy] = inputParams.edate.split("-");;
 	const selectedStart = months[parseInt(smn)-1][0] + (submittedParams.elems[0].interval.length === 3 ? (" " + parseInt(sdy)) : "");
 	const selectedEnd = months[parseInt(emn)-1][0] + (submittedParams.elems[0].interval.length === 3 ? (" " + parseInt(edy)) : "");
 	const selectedDate = (selectedDuration === 1 ? "Month of " : "") + selectedEnd;
-	let same = true;
-
 
 	useEffect(() => {
-		const [,smn,sdy] = inputParams.sdate.split("-");
-		const [,emn,edy] = inputParams.edate.split("-");;
 		if (submittedParams.bbox && inputParams.areaDef.bbox) {
-			same = submittedParams.bbox.every((val, i) => val === inputParams.areaDef.bbox[i]);
+			setSame(submittedParams.bbox.every((val, i) => val === inputParams.areaDef.bbox[i]));
 		} else if (submittedParams.loc && inputParams.areaDef.loc) {
-			console.log(submittedParams.loc + " " + inputParams.areaDef.loc)
-			same = submittedParams.loc.every((val, i) => val === inputParams.areaDef.loc[i]);
+			setSame(submittedParams.loc.every((val, i) => val === inputParams.areaDef.loc[i]));
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [inputParams])
 
 	return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -8,7 +8,6 @@ import { makeStyles } from '@mui/styles';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import InputParamsContext from './InputParamsContext';
 import LevelsSelect from './LevelsSelect';
 import ColorsSelect from './ColorsSelect';
 
@@ -50,11 +49,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const ImageSelect = () => {
+const ImageSelect = (props) => {
+	const { inputParams, updateInputParams, levels, colors } = props;
 	const [ stateOutlines, setStateOutlines ] = useState(true);
 	const [ countyOutlines, setCountyOutlines ] = useState(true);
 	const classes = useStyles();
-	const inputContext = useContext(InputParamsContext);
 
 	const handleCheckboxChange = (event) => {
 		if (event.target.name === 'stateOutlines') {
@@ -69,7 +68,7 @@ const ImageSelect = () => {
 			stateOutlines ? "state:1:black" : "state:0:black",
 			countyOutlines ? "county:0.5:grey" : "county:0:grey"
 		];
-		inputContext.updateInputParams({image: {...inputContext.inputParams.image, overlays: newOverlays}});	
+		updateInputParams({image: {...inputParams.image, overlays: newOverlays}});	
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [stateOutlines, countyOutlines]);
 
@@ -101,8 +100,17 @@ const ImageSelect = () => {
 							label="Show county outlines"
 						/>
 					
-					<LevelsSelect />
-					<ColorsSelect />
+					<LevelsSelect 
+						inputParams={inputParams}
+						updateInputParams={updateInputParams}
+						levels={levels}
+					/>
+					<ColorsSelect 
+						inputParams={inputParams}
+						updateInputParams={updateInputParams}
+						levels={levels}
+						colors={colors}
+					/>
 					</FormControl>
 				</AccordionDetails>
 			</Accordion>

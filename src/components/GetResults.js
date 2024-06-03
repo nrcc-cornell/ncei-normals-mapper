@@ -5,7 +5,7 @@ import DisplayMap from "./DisplayMap";
 import DisplayJson from "./DisplayJson";
 
 const GetResults = (props) => {
-	const { inputParams, updateLevels, viewMap } = props;
+	const { inputParams, levels, updateLevels, updateColors, viewMap } = props;
 	const [mapBlob, setMapBlob] = useState(false);
 	const [jsonresp, setJsonresp] = useState(false);
 	const [imgInfo, setImgInfo] = useState(false);
@@ -32,9 +32,9 @@ const GetResults = (props) => {
 					setResultsError("");
 				} else if (output === 'png') {
 					setResultsError("");
-					setMapBlob(response.data);
-					setJsonresp(false);
 					setImgInfo(response);
+					setJsonresp(false);
+					setMapBlob(response.data);
 				} else {
 					setResultsError("");
 					setMapBlob(false);
@@ -55,24 +55,23 @@ const GetResults = (props) => {
 	};
 
 	useEffect(() => {
-		console.log('ineffect' + viewMap)
 		if (viewMap) {
-		setResultsError(null);
-		setLoading(true);
-		// Build parameters
-		const input = buildParams(inputParams);
-		// Save parameters 
-		setSubmittedParams(input);
-		if (input.output === 'png' && input.image.levels) {
-			updateLevels({client: input.image.levels});
-		} else {
-			updateLevels({client: []});
-		}
-		// Get results
-		fetchResponse(input, input.output);
+			setResultsError(null);
+			setLoading(true);
+			// Build parameters
+			const input = buildParams(inputParams);
+			// Save parameters 
+			setSubmittedParams(input);
+			if (input.output === 'png' && input.image.levels) {
+				updateLevels({client: input.image.levels});
+			} else {
+				updateLevels({client: []});
+			}
+			// Get results
+			fetchResponse(input, input.output);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [inputParams, viewMap]);
+	}, [viewMap]);
 
 	return (
 		<>
@@ -81,7 +80,7 @@ const GetResults = (props) => {
 					{loading &&
 						<CircularProgress />
 					}
-					{submittedParams && (jsonresp || mapBlob) &&
+					{submittedParams && !loading && (jsonresp || mapBlob) &&
 						<>
 							{mapBlob &&
 								<DisplayMap 
@@ -89,12 +88,16 @@ const GetResults = (props) => {
 									imgInfo={imgInfo}
 									submittedParams={submittedParams}
 									inputParams={inputParams}
+									levels={levels}
+									updateLevels={updateLevels}
+									updateColors={updateColors}
 								/>
 							}
 							{jsonresp &&
 								<DisplayJson
 									jsonresp={jsonresp}
 									submittedParams={submittedParams}
+									inputParams={inputParams}
 								/>
 							}
 						</>

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import FormLabel from '@mui/material/FormLabel';
@@ -6,7 +6,6 @@ import FormControl from '@mui/material/FormControl';
 import { makeStyles } from '@mui/styles';
 import InfoAdornment from './InfoAdornment';
 import { infoText } from '../utilities/constants';
-import InputParamsContext from './InputParamsContext';
 
 const useStyles = makeStyles((theme) => ({
 	locInputLabel: {
@@ -25,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const PointSelect = () => {
-    const inputContext = useContext(InputParamsContext);
+const PointSelect = (props) => {
+    const { updateInputParams } = props;
     const [loc, setLoc] = useState(['','']);
     const classes = useStyles();
 
@@ -38,11 +37,11 @@ const PointSelect = () => {
         }
         newLoc[index] = newValue;
 		setLoc(newLoc);
-		inputContext.updateInputParams({areaDef: {loc:newLoc}});	
+		updateInputParams({areaDef: {loc:newLoc}});	
     };
     
     useEffect(() => {
-        inputContext.updateInputParams({areaDef: {loc:['','']}});
+        updateInputParams({areaDef: {loc:['','']}});
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

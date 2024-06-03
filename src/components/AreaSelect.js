@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,7 +10,6 @@ import RegionSelect from './RegionSelect';
 import StateSelect from './StateSelect';
 import BboxSelect from './BboxSelect';
 import PointSelect from './PointSelect';
-import InputParamsContext from './InputParamsContext';
 import AlertDialog from './AlertDialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,16 +27,16 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const AreaSelect = () => {
+const AreaSelect = (props) => {
+	const { updateInputParams, inputParams } = props;
 	const [areaType, setAreaType] = useState("state");
 	const [alertStatus, setAlertStatus] = useState(false);
 	const classes = useStyles();
-	const inputContext = useContext(InputParamsContext);
 
 	const handleTypeChange = (event) => {
 		const newAreaType = event.target.value;
 		// only point can have element of "all"; user must change if "all" is selected with anything else	
-		if (newAreaType !== 'point' && inputContext.inputParams.elems[0].name === 'all') {
+		if (newAreaType !== 'point' && inputParams.elems[0].name === 'all') {
 			setAlertStatus(true);
 		}
 		setAreaType(newAreaType);	
@@ -64,16 +63,25 @@ const AreaSelect = () => {
 			</FormControl>
 
 			{areaType === 'state' &&
-				<StateSelect />
+				<StateSelect 
+					updateInputParams={updateInputParams}
+					inputParams={inputParams}
+				/>
 			}
 			{areaType === 'region' &&
-				<RegionSelect />
+				<RegionSelect 
+					updateInputParams={updateInputParams}
+				/>
 			}
 			{areaType === 'bbox' &&
-				<BboxSelect />
+				<BboxSelect 
+					updateInputParams={updateInputParams}
+				/>
 			}
 			{areaType === 'point' &&
-				<PointSelect />
+				<PointSelect 
+					updateInputParams={updateInputParams}
+				/>
 			}
 			{alertStatus &&
 				<AlertDialog 

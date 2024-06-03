@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,7 +11,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import InputParamsContext from './InputParamsContext';
 import { infoText } from '../utilities/constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,13 +39,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const ColorsSelect = () => {
+const ColorsSelect = (props) => {
+	const { updateInputParams, inputParams, levels, colors } = props;
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [ colorCount, setColorCount ] = useState(0);
 	const [ cmp, setCmp ] = useState('Jet');
 	const [ colorError, setColorError ] = useState(false);
 	const classes = useStyles();
-	const inputContext = useContext(InputParamsContext);
 
 	const colormaps = require('../utilities/colorbrewer.json');
 	const colormap_keys = Object.keys(colormaps);
@@ -57,19 +56,17 @@ const ColorsSelect = () => {
 
 	const handleMenuItemClick = (val) => {
 		setAnchorEl(null);
-		setCmp(val);
-		//const levelcnt = (inputContext.inputParams.image.levels && inputContext.inputParams.image.levels.length >= 0) ? inputContext.inputParams.image.levels.split(",").length : inputContext.levels.server.length;
-		//setColorCount(levelcnt+1);
+		setCmp(val);;
 		if (colormaps[val].hasOwnProperty(colorCount)) {
 			const newColors = colormaps[val][colorCount];
-			if (inputContext.levels.client.length === 0) {
-				inputContext.updateInputParams({image: {...inputContext.inputParams.image, cmap: newColors, levels: inputContext.levels.server.join(",")}});
+			if (levels.client.length === 0) {
+				updateInputParams({image: {...inputParams.image, cmap: newColors, levels: levels.server.join(",")}});
 			} else {
-				inputContext.updateInputParams({image: {...inputContext.inputParams.image, cmap: newColors}});
+				updateInputParams({image: {...inputParams.image, cmap: newColors}});
 			}
 			setColorError(false);
 		} else {
-			inputContext.updateInputParams({image: {...inputContext.inputParams.image, cmap: []}});
+			updateInputParams({image: {...inputParams.image, cmap: []}});
 			setColorError(true);
 		}
 	};
@@ -79,32 +76,32 @@ const ColorsSelect = () => {
 	};
 
 	useEffect(() => {
-		if (inputContext.colors.server) {
-			setColorCount(inputContext.colors.server.length);
+		if (colors.server) {
+			setColorCount(colors.server.length);
 			setColorError(false);
 		}
-	}, [inputContext.colors.server]);
+	}, [colors.server]);
 
 	useEffect(() => {
-		if (typeof inputContext.inputParams.image.levels === 'string' && inputContext.inputParams.image.levels.length >= 0) {
-			const levelLength = inputContext.inputParams.image.levels.split(",").length;
+		if (typeof inputParams.image.levels === 'string' && inputParams.image.levels.length >= 0) {
+			const levelLength = inputParams.image.levels.split(",").length;
 			setColorCount(levelLength + 1);
 			if (colormaps[cmp].hasOwnProperty(levelLength + 1)) {
 				const newColors = colormaps[cmp][levelLength + 1];
-				inputContext.updateInputParams({image: {...inputContext.inputParams.image, cmap: newColors}});
+				updateInputParams({image: {...inputParams.image, cmap: newColors}});
 				setColorError(false);
 			} else {
-				inputContext.updateInputParams({image: {...inputContext.inputParams.image, cmap: []}});
+				updateInputParams({image: {...inputParams.image, cmap: []}});
 				setCmp('Jet');
 				setColorError(levelLength === 1 ? false : true);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [inputContext.inputParams.image.levels]);
+	}, [inputParams.image.levels]);
 
 	return ( 
 		<div className={classes.colorsContainer}>
-			{(inputContext.levels.client.length > 0 || inputContext.levels.server.length > 0) &&
+			{(levels.client.length > 0 || levels.server.length > 0) &&
 				<>
 					<List className={classes.listContainer} aria-label="color selection">
 						<ListItem

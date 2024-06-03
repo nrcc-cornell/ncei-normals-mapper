@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OptionsSelection = (props) => {
-	const {open, handleDrawerClose, handleViewMapClick} = props;
+	const { open, handleDrawerClose, handleViewMapClick, inputParams, updateInputParams, levels, colors } = props;
 	const classes = useStyles();
 
 	return (
@@ -79,10 +79,24 @@ const OptionsSelection = (props) => {
 				</div>
 				<Divider />
 
-				<AreaSelect />
-				<ElementSelect />
-				<DateSelect />
-				<ImageSelect />
+				<AreaSelect 
+					inputParams = {inputParams}
+					updateInputParams = {updateInputParams}
+				/>
+				<ElementSelect 
+					inputParams = {inputParams}
+					updateInputParams = {updateInputParams}
+				/>
+				<DateSelect 
+					inputParams = {inputParams}
+					updateInputParams = {updateInputParams}
+				/>
+				<ImageSelect 
+					inputParams = {inputParams}
+					updateInputParams = {updateInputParams}
+					levels = {levels}
+					colors = {colors}
+				/>
 
 				<Tooltip title="submit request">
 					<Button variant="outlined" size="medium" className={classes.submitButton} onClick={handleViewMapClick}>

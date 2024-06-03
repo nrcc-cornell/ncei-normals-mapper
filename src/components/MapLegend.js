@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
-import InputParamsContext from './InputParamsContext';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -14,14 +13,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MapLegend = (props) => {
-	const { imgInfo } = props;
+	const { imgInfo, propLevels, updateLevels, updateColors } = props;
 	const { levels, cmap, range } = imgInfo;
 	const [ width, setWidth ] = useState();
 	const [ eachWidth, setEachWidth ] = useState();
 	const ref = useRef(null);
 	const classes = useStyles();
 	const color_styles = cmap.map((color) => { return {height: "28px", backgroundColor: color, opacity: "0.8"} });
-	const inputContext = useContext(InputParamsContext);
 
 	useEffect(() => {
 		// trim off insignificant digits e.g. 1.10000000001 => 1.1
@@ -29,7 +27,7 @@ const MapLegend = (props) => {
 			return (Math.abs(Math.round(lev*100)/100 - lev) > 0) ? parseFloat(lev.toFixed(2)) : lev;
 		})
 		// remove levels above or below range of values (i.e. unused colors), unless explicitly requested by client
-		if (inputContext.levels.client.length === 0) {
+		if (propLevels.client.length === 0) {
 			if (levelLabels[levelLabels.length-1] >= range[1]) {
 				levelLabels.pop();
 				cmap.pop();
@@ -39,8 +37,8 @@ const MapLegend = (props) => {
 				cmap.shift()
 			}
 		}
-		inputContext.updateLevels({server: levelLabels});
-		inputContext.updateColors({server: cmap});
+		updateLevels({server: levelLabels});
+		updateColors({server: cmap});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [levels])
 
@@ -75,7 +73,7 @@ const MapLegend = (props) => {
 						<TableBody>
 							<TableRow>
 								<TableCell style={{width:eachWidth/2}}></TableCell>
-								{inputContext.levels.server.map((lv, i) => (
+								{propLevels.server.map((lv, i) => (
 									<TableCell key={i}align="center" style={{width:eachWidth}}>{lv}</TableCell>
 								))}
 								<TableCell style={{width:eachWidth/2}}></TableCell>

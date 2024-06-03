@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
@@ -9,7 +9,6 @@ import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import Grid from '@mui/material/Grid';
 import { makeStyles } from '@mui/styles';
-import InputParamsContext from './InputParamsContext';
 import { infoText } from '../utilities/constants';
 import InfoAdornment from './InfoAdornment';
 import SubstateSelect from './SubstateSelect';
@@ -28,9 +27,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const StateSelect = () => {
-		const inputContext = useContext(InputParamsContext);
-		const [postals, setPostals] = useState(inputContext.inputParams.areaDef.state ? inputContext.inputParams.areaDef.state : "ME,WV");
+const StateSelect = (props) => {
+		const { updateInputParams, inputParams } = props;
+		const [postals, setPostals] = useState(inputParams.areaDef.state ? inputParams.areaDef.state : "ME,WV");
 		const [stateType, setStateType] = useState("all");
 		const classes = useStyles();
 		
@@ -38,20 +37,20 @@ const StateSelect = () => {
 			const newStateType = event.target.value;
 			setStateType(newStateType);
 			if (newStateType === 'all') {
-				inputContext.updateInputParams({areaDef: {state: postals}, stateType: newStateType});
+				updateInputParams({areaDef: {state: postals}, stateType: newStateType});
 			} else {
-				inputContext.updateInputParams({stateType: newStateType});
+				updateInputParams({stateType: newStateType});
 			}
 		};
 
 		const handleStateChange = (event) => {
 			const newPostals = event.target.value.replace(" ","");
 			setPostals(newPostals);
-			inputContext.updateInputParams({areaDef: {state:newPostals}});	
+			updateInputParams({areaDef: {state:newPostals}});	
 		};
 
 		useEffect(() => {
-			inputContext.updateInputParams({areaDef: {state: inputContext.inputParams.areaDef.state ? inputContext.inputParams.areaDef.state : "ME,WV"}});
+			updateInputParams({areaDef: {state: inputParams.areaDef.state ? inputParams.areaDef.state : "ME,WV"}});
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, []);
 
@@ -107,7 +106,10 @@ const StateSelect = () => {
 
 					<Grid item>
 						{(stateType !== "all") &&
-							<SubstateSelect postals={postals} stateType={stateType} />
+							<SubstateSelect 
+								postals={postals} 
+								stateType={stateType}
+								updateInputParams={updateInputParams} />
 						}
 					</Grid>
 				</Grid>

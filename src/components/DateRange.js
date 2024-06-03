@@ -1,10 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import dayjs from 'dayjs';
-import InputParamsContext from './InputParamsContext';
 import { makeStyles } from '@mui/styles';
 import { monthAbbs } from '../utilities/constants'
 
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function DateFilter(props) {
-  const inputContext = useContext(InputParamsContext);
+  const { updateInputParams } = props;
   const classes = useStyles();
   const [ smonth, setSmonth ] = useState('01');
   const [ emonth, setEmonth ] = useState('12');
@@ -36,9 +35,9 @@ export default function DateFilter(props) {
   const updateDate = (whichdate, tmon, tday) => {
 		const newdate = ["1991", tmon, tday].join("-");
     if (whichdate === "start") {
-      inputContext.updateInputParams({sdate:newdate})
+      updateInputParams({sdate:newdate})
     } else {
-      inputContext.updateInputParams({edate:newdate})
+      updateInputParams({edate:newdate})
     }
 	};
 
@@ -122,7 +121,7 @@ export default function DateFilter(props) {
 	}
 
   useEffect(() => {
-		inputContext.updateInputParams({
+		updateInputParams({
       sdate:["1991", smonth, sday].join("-"), 
       edate:["1991", emonth, eday].join("-")
     });

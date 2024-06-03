@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormHelperText from '@mui/material/FormHelperText';
 import InfoAdornment from './InfoAdornment';
-import InputParamsContext from './InputParamsContext';
 import { infoText } from '../utilities/constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,30 +19,31 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const LevelsSelect = () => {
-	const [ levels, setLevels ] = useState("");
+const LevelsSelect = (props) => {
+	const { inputParams, updateInputParams, levels } = props;
+	const [ localLevels, setLocalLevels ] = useState("");
 	const classes = useStyles();
-	const inputContext = useContext(InputParamsContext);
+
 	
 	const handleLevelChange = (event) => {
 		const newlevels = event.target.value.replace(" ","");;
-		setLevels(newlevels);
-		inputContext.updateInputParams({image: {...inputContext.inputParams.image, levels: newlevels}});
+		setLocalLevels(newlevels);
+		updateInputParams({image: {...inputParams.image, levels: newlevels}});
 	};
 
 	useEffect(() => {
-		if (inputContext.levels.server) {
-			const newlevels = inputContext.levels.server.join(",");
-			setLevels(newlevels);	
+		if (levels.server) {
+			const newlevels = levels.server.join(",");
+			setLocalLevels(newlevels);	
 		}
-	}, [inputContext.levels.server]);
+	}, [levels.server]);
 
 	return ( 
         <div className={classes.levelsContainer}>
             <FormControl variant="outlined" className={classes.levelFormControl}>
                 <InputLabel htmlFor="levelInput" className={classes.levelInputLabel}>Contour levels</InputLabel>
                 <OutlinedInput
-                    value={levels}
+                    value={localLevels}
                     id="levelInput"
                     label="Contour levels"
                     margin="dense"

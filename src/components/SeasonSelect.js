@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { makeStyles } from '@mui/styles';
-import InputParamsContext from './InputParamsContext';
 
 const useStyles = makeStyles((theme) => ({
 	listContainer: {
@@ -15,10 +14,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SeasonSelect = (params) => {
-    const { choices, label } = params;
+    const { choices, label, updateInputParams } = params;
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [selectedIndex, setSelectedIndex] = useState(0);
-	const inputContext = useContext(InputParamsContext);
 	const classes = useStyles();
 
 	const handleClickListItem = (event) => {
@@ -28,7 +26,7 @@ const SeasonSelect = (params) => {
 	const handleMenuItemClick = (event, index) => {
 		setSelectedIndex(index);
 		setAnchorEl(null);
-		inputContext.updateInputParams({sdate:"1991-"+choices[index][1], edate:"1991-"+choices[index][2]});
+		updateInputParams({sdate:"1991-"+choices[index][1], edate:"1991-"+choices[index][2]});
 	};
 
 	const handleClose = () => {
@@ -36,7 +34,7 @@ const SeasonSelect = (params) => {
 	};
 
 	useEffect(() => {
-		inputContext.updateInputParams({sdate:"1991-"+choices[selectedIndex][1], edate:"1991-"+choices[selectedIndex][2]});
+		updateInputParams({sdate:"1991-"+choices[selectedIndex][1], edate:"1991-"+choices[selectedIndex][2]});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

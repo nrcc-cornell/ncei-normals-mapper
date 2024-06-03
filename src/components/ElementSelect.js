@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -6,7 +6,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { makeStyles } from '@mui/styles';
-import InputParamsContext from './InputParamsContext';
 import { elements } from '../utilities/constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,12 +23,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const ElementSelect = () => {
+const ElementSelect = (props) => {
+	const { inputParams, updateInputParams } = props;
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [selectedIndex, setSelectedIndex] = useState(0);
-	const inputContext = useContext(InputParamsContext);
 	const classes = useStyles();
-	const isPoint = inputContext.inputParams.areaDef.hasOwnProperty('loc');
+	const isPoint = inputParams.areaDef.hasOwnProperty('loc');
 
 	const handleClickListItem = (event) => {
 		setAnchorEl(event.currentTarget);
@@ -38,9 +37,9 @@ const ElementSelect = () => {
 	const handleMenuItemClick = (event, index) => {
 		setSelectedIndex(index);
 		setAnchorEl(null);
-		const newElems = inputContext.inputParams.elems;
+		const newElems = inputParams.elems;
 		newElems[0] = {...newElems[0], name: elements[index].name, reduce: elements[index].reduce}
-		inputContext.updateInputParams({elems: newElems});
+		updateInputParams({elems: newElems});
 	};
 
 	const handleClose = () => {

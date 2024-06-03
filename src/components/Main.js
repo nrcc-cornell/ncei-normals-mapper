@@ -6,7 +6,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Banner from './Banner';
 import OptionsSelection from './OptionsSelection';
 import GetResults from './GetResults';
-import InputParamsContext from './InputParamsContext';
 import { default_params, default_levels, default_colors, drawerWidth } from '../utilities/constants';
 import poweredByAcis from '../images/PoweredbyACIS.gif';
 
@@ -91,61 +90,65 @@ const Main = () => {
   },[smallScreen]);
 
   return (
-    <InputParamsContext.Provider value={{ inputParams, updateInputParams, levels, updateLevels, colors, updateColors }}>
-      <>
-        <a href="#maincontent" className="skip">Skip to main content</a>
+    <>
+      <a href="#maincontent" className="skip">Skip to main content</a>
 
-        <Banner
+      <Banner
+        open={open}
+        handleDrawerOpen={handleDrawerOpen}
+      />
+
+      <nav>
+        <OptionsSelection
           open={open}
-          handleDrawerOpen={handleDrawerOpen}
+          handleDrawerClose={handleDrawerClose}
+          handleViewMapClick={handleViewMapClick}
+          inputParams={inputParams}
+          updateInputParams={updateInputParams}
+          levels={levels}
+          colors={colors}
         />
-  
-        <nav>
-          <OptionsSelection
-            open={open}
-            handleDrawerClose={handleDrawerClose}
-            handleViewMapClick={handleViewMapClick}
+      </nav>
+
+      <main id="maincontent">
+        <div className={classes.drawerHeader}  />
+        <div className={clsx(classes.content, { [classes.contentShift]: open, })}>
+          <GetResults 
+            inputParams = {inputParams}
+            updateLevels = {updateLevels}
+            viewMap = {viewMap}
+            levels = {levels}
+            updateColors = {updateColors}
           />
-        </nav>
+          {!viewMap &&
+            <>
+              <Typography paragraph>
+                Climate Normals are three-decade averages of climatological variables including temperature and precipitation. 
+                These normals are updated once every 10 years. This initial release of 
+                the 1991-2020 gridded 
+                <a href="https://www.ncei.noaa.gov/products/us-climate-normals" target="_blank" rel="noreferrer"> U.S. climate normals</a> dataset 
+                from the <a href="https://www.ncei.noaa.gov/" target="_blank" rel="noreferrer">National Centers for Environmental Information</a> contains monthly normals of temperature (maximum, miminum, average) and precipitation for the conterminous 
+                United States.
+              </Typography>
+                              
+              <Typography paragraph>
+                To view the data contained in the gridded climate normals dataset, set your desired options in the
+                navigation pane and click the "Submit Request" button to view the results. Buttons will be provided below each
+                resulting product to allow you to download the data in a variety of formats.
+              </Typography>
 
-        <main id="maincontent">
-          <div className={classes.drawerHeader}  />
-          <div className={clsx(classes.content, { [classes.contentShift]: open, })}>
-            <GetResults 
-              inputParams = {inputParams}
-              updateLevels = {updateLevels}
-              viewMap = {viewMap}
-            />
-            {!viewMap &&
-              <>
-                <Typography paragraph>
-                  Climate Normals are three-decade averages of climatological variables including temperature and precipitation. 
-                  These normals are updated once every 10 years. This initial release of 
-                  the 1991-2020 gridded 
-                  <a href="https://www.ncei.noaa.gov/products/us-climate-normals" target="_blank" rel="noreferrer"> U.S. climate normals</a> dataset 
-                  from the <a href="https://www.ncei.noaa.gov/" target="_blank" rel="noreferrer">National Centers for Environmental Information</a> contains monthly normals of temperature (maximum, miminum, average) and precipitation for the conterminous 
-                  United States.
-                </Typography>
-                               
-                <Typography paragraph>
-                  To view the data contained in the gridded climate normals dataset, set your desired options in the
-                  navigation pane and click the "Submit Request" button to view the results. Buttons will be provided below each
-                  resulting product to allow you to download the data in a variety of formats.
-                </Typography>
-
-                <Typography>
-                  Additional map customization will be added in the next version of this application.
-                </Typography>
-               
-                <footer className={classes.footerContainer}>
-                    <img src={poweredByAcis} alt={'Powered by ACIS'} />
-                </footer>
-              </>
-            }
-          </div>
-        </main>
-      </>
-    </InputParamsContext.Provider>
+              <Typography>
+                Additional map customization will be added in the next version of this application.
+              </Typography>
+              
+              <footer className={classes.footerContainer}>
+                  <img src={poweredByAcis} alt={'Powered by ACIS'} />
+              </footer>
+            </>
+          }
+        </div>
+      </main>
+    </>
   )
 }
 

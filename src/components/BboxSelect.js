@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import FormLabel from '@mui/material/FormLabel';
@@ -6,7 +6,6 @@ import FormControl from '@mui/material/FormControl';
 import { makeStyles } from '@mui/styles';
 import InfoAdornment from './InfoAdornment';
 import { infoText } from '../utilities/constants';
-import InputParamsContext from './InputParamsContext';
 
 const useStyles = makeStyles((theme) => ({
 	bboxInputLabel: {
@@ -25,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const BboxSelect = () => {
-	const inputContext = useContext(InputParamsContext);
+const BboxSelect = (props) => {
+	const { updateInputParams } = props;
 	const [bbox, setBbox] = useState(['','','','']);
 	const classes = useStyles();
 
@@ -39,11 +38,11 @@ const BboxSelect = () => {
 		}
 		newBbox[index] = newValue;
 		setBbox(newBbox);
-		inputContext.updateInputParams({areaDef: {bbox:newBbox}})
+		updateInputParams({areaDef: {bbox:newBbox}})
 	};
 	
 	useEffect(() => {
-		inputContext.updateInputParams({areaDef: {bbox:['','','','']}});
+		updateInputParams({areaDef: {bbox:['','','','']}});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

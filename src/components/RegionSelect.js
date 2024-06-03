@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { makeStyles } from '@mui/styles';
-import InputParamsContext from './InputParamsContext';
 import { regions } from '../utilities/constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const RegionSelect = () => {
+const RegionSelect = (props) => {
+	const { updateInputParams } = props;
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [selectedIndex, setSelectedIndex] = useState(12);  // default (ME,WV)
-	const inputContext = useContext(InputParamsContext);
 	const classes = useStyles();
 
 	const handleClickListItem = (event) => {
@@ -28,7 +27,7 @@ const RegionSelect = () => {
 	const handleMenuItemClick = (event, index) => {
 		setSelectedIndex(index);
 		setAnchorEl(null);
-		inputContext.updateInputParams({areaDef: {state:regions[index].states.replaceAll('-',',')}});
+		updateInputParams({areaDef: {state:regions[index].states.replaceAll('-',',')}});
 	};
 
 	const handleClose = () => {
@@ -36,7 +35,7 @@ const RegionSelect = () => {
 	};
 
 	useEffect(() => {
-		inputContext.updateInputParams({areaDef: {state:regions[selectedIndex].states.replaceAll('-',',')}});
+		updateInputParams({areaDef: {state:regions[selectedIndex].states.replaceAll('-',',')}});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

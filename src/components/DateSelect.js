@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -6,7 +6,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { makeStyles } from '@mui/styles';
-import InputParamsContext from './InputParamsContext';
 import SeasonSelect from './SeasonSelect';
 import DateRange from './DateRange';
 import { months, seasons } from '../utilities/constants';
@@ -33,16 +32,16 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const DateSelect = () => {
+const DateSelect = (props) => {
+	const { updateInputParams, inputParams } = props;
 	const [dateType, setDateType] = useState('month');
 	const classes = useStyles();
-	const inputContext = useContext(InputParamsContext);
  
 	const handleTypeChange = (event) => {
 		const newDateType = event.target.value;
 		setDateType(newDateType);
 		if (newDateType === 'month') {
-			inputContext.updateInputParams({sdate: inputContext.inputParams.edate});
+			updateInputParams({sdate: inputParams.edate});
 		}
 	};
 	
@@ -65,16 +64,20 @@ const DateSelect = () => {
 				<SeasonSelect 
 					choices={months}
 					label="Click to select month"
+					updateInputParams = {updateInputParams}
 				/>
 			}
 			{dateType === 'season' &&
 				<SeasonSelect 
 					choices={seasons}
 					label="Click to select season"
+					updateInputParams = {updateInputParams}
 				/>
 			}
 			{dateType === 'interval' &&
-				<DateRange />
+				<DateRange 
+					updateInputParams = {updateInputParams}
+				/>
 			}
 		</div>
 	)

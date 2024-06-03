@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DisplayJson = (props) => {
-	const { jsonresp, submittedParams } = props;
+	const { jsonresp, submittedParams, inputParams } = props;
     const [showParams, setShowParams] = useState(false);
     const classes = useStyles();
     const eNames = elementNames();
@@ -42,6 +42,7 @@ const DisplayJson = (props) => {
         <div>
             <MapTitle 
                 submittedParams={submittedParams}
+                inputParams={inputParams}
             />
             <Paper variant="outlined" className={classes.resContainer}>
                 {jsonresp[0].map((col,i) => (

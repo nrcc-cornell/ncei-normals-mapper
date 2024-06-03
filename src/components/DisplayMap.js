@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DisplayMap = (props) => {
-	const { imgsrc, submittedParams, imgInfo, inputParams } = props;
+	const { imgsrc, submittedParams, imgInfo, inputParams, levels, updateLevels, updateColors } = props;
 	const [showParams, setShowParams] = useState(false);
 	const classes = useStyles();
 
@@ -59,6 +59,9 @@ const DisplayMap = (props) => {
 				{imgInfo &&
 					<MapLegend 
 						imgInfo={imgInfo}
+						propLevels={levels}
+						updateLevels={updateLevels}
+						updateColors={updateColors}
 					/>
 				}
 			</div>

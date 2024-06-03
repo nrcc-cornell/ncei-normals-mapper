@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import CircularProgress from "@mui/material/CircularProgress";
-import InputParamsContext from './InputParamsContext';
 import { makeStyles } from '@mui/styles';
 import { checkBbox } from '../utilities/utils';
 
@@ -30,13 +29,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SubstateSelect = (props) => {
-	const { postals, stateType } = props;
+	const { postals, stateType, updateInputParams } = props;
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [counties, setCounties] = useState();
     const [fetchError, setFetchError] = useState();
 	const [loading, setLoading] = useState(false);
-    const inputContext = useContext(InputParamsContext);
+
     const classes = useStyles();
 
     const fetchGeneral = (jsonparams) => {
@@ -55,7 +54,7 @@ const SubstateSelect = (props) => {
                         setSelectedIndex(0);
                         let bbox = response.meta[0].bbox;
                         bbox = checkBbox(bbox);
-                        inputContext.updateInputParams({areaDef: {bbox: bbox}});
+                        updateInputParams({areaDef: {bbox: bbox}});
                     } else {
                         setFetchError("No list for "+postals);
                     }
@@ -85,7 +84,7 @@ const SubstateSelect = (props) => {
 		setAnchorEl(null);
         let bbox = counties[index].bbox;
         bbox = checkBbox(bbox);
-		inputContext.updateInputParams({areaDef: {bbox: bbox}});
+		updateInputParams({areaDef: {bbox: bbox}});
 	};
 
 	const handleClose = () => {
