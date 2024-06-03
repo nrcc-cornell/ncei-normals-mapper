@@ -1,18 +1,17 @@
-import React, { useEffect, useState, useContext} from "react";
+import React, { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import InputParamsContext from './InputParamsContext';
 import { buildParams } from '../utilities/utils';
 import DisplayMap from "./DisplayMap";
 import DisplayJson from "./DisplayJson";
 
-const GetResults = () => {
-	const [mapBlob, setMapBlob] = useState();
-	const [jsonresp, setJsonresp] = useState();
-	const [imgInfo, setImgInfo] = useState();
+const GetResults = (props) => {
+	const { inputParams, updateLevels, viewMap } = props;
+	const [mapBlob, setMapBlob] = useState(false);
+	const [jsonresp, setJsonresp] = useState(false);
+	const [imgInfo, setImgInfo] = useState(false);
 	const [resultsError, setResultsError] = useState();
 	const [loading, setLoading] = useState(false);
 	const [submittedParams, setSubmittedParams] = useState();
-	const inputContext = useContext(InputParamsContext);
 
 	const fetchResponse = (params, output) => {
 		const infoInput = JSON.stringify({...params, output: "json"});
@@ -34,10 +33,13 @@ const GetResults = () => {
 				} else if (output === 'png') {
 					setResultsError("");
 					setMapBlob(response.data);
+					setJsonresp(false);
 					setImgInfo(response);
 				} else {
 					setResultsError("");
+					setMapBlob(false);
 					setJsonresp(response.data);
+					setImgInfo(false);
 				}
 			})
 			.catch(err => {
@@ -53,46 +55,54 @@ const GetResults = () => {
 	};
 
 	useEffect(() => {
+		console.log('ineffect' + viewMap)
+		if (viewMap) {
 		setResultsError(null);
 		setLoading(true);
 		// Build parameters
-		const input = buildParams(inputContext.inputParams);
+		const input = buildParams(inputParams);
 		// Save parameters 
 		setSubmittedParams(input);
 		if (input.output === 'png' && input.image.levels) {
-			inputContext.updateLevels({client: input.image.levels});
+			updateLevels({client: input.image.levels});
 		} else {
-			inputContext.updateLevels({client: []});
+			updateLevels({client: []});
 		}
 		// Get results
 		fetchResponse(input, input.output);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [inputParams, viewMap]);
 
 	return (
 		<>
-			{loading &&
-				<CircularProgress />
-			}
-			{submittedParams && (jsonresp || mapBlob) &&
+			{viewMap &&
 				<>
-					{mapBlob &&
-						<DisplayMap 
-							imgsrc={mapBlob}
-							imgInfo={imgInfo}
-							submittedParams={submittedParams}
-						/>
+					{loading &&
+						<CircularProgress />
 					}
-					{jsonresp &&
-						<DisplayJson
-							jsonresp={jsonresp}
-							submittedParams={submittedParams}
-						/>
+					{submittedParams && (jsonresp || mapBlob) &&
+						<>
+							{mapBlob &&
+								<DisplayMap 
+									imgsrc={mapBlob}
+									imgInfo={imgInfo}
+									submittedParams={submittedParams}
+									inputParams={inputParams}
+								/>
+							}
+							{jsonresp &&
+								<DisplayJson
+									jsonresp={jsonresp}
+									submittedParams={submittedParams}
+								/>
+							}
+						</>
+					}
+					{resultsError &&
+						<p>{resultsError}</p>
 					}
 				</>
-			}
-			{resultsError &&
-				<p>{resultsError}</p>
 			}
 		</>
 	);

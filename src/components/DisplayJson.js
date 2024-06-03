@@ -24,7 +24,11 @@ const DisplayJson = (props) => {
     const [showParams, setShowParams] = useState(false);
     const classes = useStyles();
     const eNames = elementNames();
-    const sElems = [{name:'date'}, ...submittedParams.elems];
+    const cElems = ['date'];
+    submittedParams.elems.forEach((e) => {
+        const aname = e.hasOwnProperty('name') ? e.name : e.elem.name;
+        cElems.push(aname);
+    })
 
 	const handleShowParamsClick = () => {
 		setShowParams(prev => !prev);
@@ -42,8 +46,8 @@ const DisplayJson = (props) => {
             <Paper variant="outlined" className={classes.resContainer}>
                 {jsonresp[0].map((col,i) => (
                     <Typography variant="body1" key={i}>
-                        {sElems[i].name !== 'date' &&
-                            eNames[sElems[i].elem.name] + ": " + parseFloat(col).toFixed(sElems[i].elem.name === 'pcpn' ? 2 : 1)
+                        {cElems[i] !== 'date' &&
+                            eNames[cElems[i]] + ": " + parseFloat(col).toFixed(cElems[i] === 'pcpn' ? 2 : 1)
                         }
                     </Typography>
                 ))}

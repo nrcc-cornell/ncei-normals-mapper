@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DisplayMap = (props) => {
-	const { imgsrc, submittedParams, imgInfo } = props;
+	const { imgsrc, submittedParams, imgInfo, inputParams } = props;
 	const [showParams, setShowParams] = useState(false);
 	const classes = useStyles();
 
@@ -54,6 +54,7 @@ const DisplayMap = (props) => {
 			<div className={classes.mapTitleContainer}>
 				<MapTitle 
 					submittedParams={submittedParams}
+					inputParams={inputParams}
 				/>
 				{imgInfo &&
 					<MapLegend 

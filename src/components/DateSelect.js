@@ -8,7 +8,8 @@ import FormLabel from '@mui/material/FormLabel';
 import { makeStyles } from '@mui/styles';
 import InputParamsContext from './InputParamsContext';
 import SeasonSelect from './SeasonSelect';
-import RenderDate from './RenderDate';
+import DateRange from './DateRange';
+import { months, seasons } from '../utilities/constants';
 
 const useStyles = makeStyles((theme) => ({
 	dateTypeContainer: {
@@ -60,71 +61,23 @@ const DateSelect = () => {
 				</RadioGroup>
 			</FormControl>
 
-			{dateType === 'interval' &&
-				<div>
-					<RenderDate
-						dateLegend='Start month'
-						dateParam='sdate'
-						id="select-smonth"
-						justMonth={true}
-					/>
-					<Typography className={classes.dateSeperator}>
-						-
-					</Typography>
-					<RenderDate 
-						dateLegend='End month'
-						dateParam='edate'
-						id="select-emonth"
-						justMonth={true}
-					/>
-				</div>
-			}
 			{dateType === 'month' &&
-				<div>
-					<RenderDate
-						dateLegend='Month'
-						dateParam='date'
-						id="select-month"
-						justMonth={true}
-					/>
-				</div>
-		}
+				<SeasonSelect 
+					choices={months}
+					label="Click to select month"
+				/>
+			}
 			{dateType === 'season' &&
-				<SeasonSelect />
-		}
+				<SeasonSelect 
+					choices={seasons}
+					label="Click to select season"
+				/>
+			}
+			{dateType === 'interval' &&
+				<DateRange />
+			}
 		</div>
 	)
 }
 
 export default DateSelect;
-
-/*
-		newElems[0] = {...newElems[0], interval: newDateType === 'month' ? [0,1] : [0,0,1], duration: newDateType === 'interval' ? null : 1} // "interval" duration set in Getimage
-					<FormControlLabel value="day" control={<Radio size="small" className={classes.radioButton} />} label="Day" />
-
-			{dateType === 'day' &&
-				<div>
-					<RenderDate
-						dateLegend='Date'
-						dateParam='edate'
-					/>
-				</div>
-			}
-
-			dateType === 'interval' &&
-				<div>
-					<RenderDate
-						dateLegend='Start date'
-						dateParam='sdate'
-					/>
-					<Typography className={classes.dateSeperator}>
-						-
-					</Typography>
-					<RenderDate 
-						dateLegend='End date'
-						dateParam='edate'
-					/>
-				</div>
-			}
-
-*/

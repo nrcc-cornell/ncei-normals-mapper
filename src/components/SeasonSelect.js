@@ -6,7 +6,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { makeStyles } from '@mui/styles';
 import InputParamsContext from './InputParamsContext';
-import { seasons } from '../utilities/constants';
 
 const useStyles = makeStyles((theme) => ({
 	listContainer: {
@@ -15,7 +14,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const SeasonSelect = () => {
+const SeasonSelect = (params) => {
+    const { choices, label } = params;
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const inputContext = useContext(InputParamsContext);
@@ -28,7 +28,7 @@ const SeasonSelect = () => {
 	const handleMenuItemClick = (event, index) => {
 		setSelectedIndex(index);
 		setAnchorEl(null);
-		inputContext.updateInputParams({sdate:"1991-"+seasons[index][1], edate:"1991-"+seasons[index][2]});
+		inputContext.updateInputParams({sdate:"1991-"+choices[index][1], edate:"1991-"+choices[index][2]});
 	};
 
 	const handleClose = () => {
@@ -36,31 +36,31 @@ const SeasonSelect = () => {
 	};
 
 	useEffect(() => {
-		inputContext.updateInputParams({sdate:"1991-"+seasons[selectedIndex][1], edate:"1991-"+seasons[selectedIndex][2]});
+		inputContext.updateInputParams({sdate:"1991-"+choices[selectedIndex][1], edate:"1991-"+choices[selectedIndex][2]});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
 		<div>
-			<List className={classes.listContainer} aria-label="Season selection">
+			<List className={classes.listContainer} aria-label="Date selection">
 				<ListItem
 					button
 					aria-haspopup="true"
-					aria-controls="season-menu"
-					aria-label="selected season"
+					aria-controls="date-menu"
+					aria-label="selected date"
 					onClick={handleClickListItem}
 				>
-					<ListItemText primary="Click to select season" secondary={"Currently selected: "+seasons[selectedIndex][0]} />
+					<ListItemText primary={label} secondary={"Currently selected: "+choices[selectedIndex][0]} />
 				</ListItem>
 			</List>
 			<Menu
-				id="season-menu"
+				id="month-menu"
 				anchorEl={anchorEl}
 				keepMounted
 				open={Boolean(anchorEl)}
 				onClose={handleClose} 
 			>
-				{seasons.map((option, index) => (
+				{choices.map((option, index) => (
 					<MenuItem
 						key={index}
 						selected={index === selectedIndex}

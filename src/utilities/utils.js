@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { elements, maxbbox } from '../utilities/constants';
 
 //const dateDiff = (date1, date2) => {
@@ -44,39 +45,65 @@ const checkLoc = loc => {
 };
 
 const buildParams = (input_params) => {
+	var duration, newElems;
 	let paramsToSubmit = {grid: input_params.grid, output: input_params.output};
 	//console.log(input_params) // for debugging
 
-	// For "interval" date selection, calculate duration based on sdate and edate. 
-	const mndiff = parseInt(input_params.edate.split("-")[1]) - parseInt(input_params.sdate.split("-")[1]);
-	const duration = mndiff + (mndiff >= 0 ? 1 : 13);
-
-	// Set up nested elements
-	const origElem = input_params.elems[0];
-	const newElems = [
-		{
-			elem: origElem, 
-			interval: [0,1], 
-			duration: duration, 
-			reduce: origElem.reduce
+	if (input_params.edate.length > 7) {
+		// daily interval
+		const date1 = dayjs(input_params.sdate);
+		const date2 = dayjs(input_params.edate);
+		const hrdiff = date2.diff(date1, 'hours');	//difference in hours
+		const dydiff = Math.floor(hrdiff / 24);		// difference in days 
+		duration = dydiff + (dydiff >= 0 ? 1 : 366)
+		newElems = []
+		if (input_params.elems[0].name !== 'all') {
+			newElems.push({...input_params.elems[0], interval:[0,0,1], duration: duration})
+		} else {
+			['maxt','mint','avgt','pcpn'].forEach((elem,i) => {
+				newElems.push({name: elem, interval: [0,0,1], duration: duration, reduce: elements[i].reduce});
+			});
 		}
-	];
-
-	// Replicate nested elems for all variables, if requested for a single grid point
-	if (origElem.name === 'all') {
-		let nestedElem = {...newElems[0].elem, name: 'maxt', reduce: elements[0].reduce};
-		newElems[0] = {...newElems[0], elem:nestedElem, reduce: elements[0].reduce};
-		['mint','avgt','pcpn'].forEach((elem,i) => {
-			nestedElem = {...newElems[0].elem, name: elem, reduce: elements[i+1].reduce};
-			newElems.push({...newElems[0], elem: nestedElem, reduce: elements[i+1].reduce});
-		});
+	} else if (input_params.edate === input_params.sdate) {
+		// single month duration is 1
+		newElems = []
+		if (input_params.elems[0].name !== 'all') {
+			newElems.push({...input_params.elems[0], interval:[0,1], duration: 1})
+		} else {
+			['maxt','mint','avgt','pcpn'].forEach((elem,i) => {
+				newElems.push({name: elem, interval: [0,1], duration: 1, reduce: elements[i].reduce});
+			});
+		}
+	} else {
+		// For "season" date selection, calculate duration based on sdate and edate. 
+		const mndiff = parseInt(input_params.edate.split("-")[1]) - parseInt(input_params.sdate.split("-")[1]);
+		duration = mndiff + (mndiff >= 0 ? 1 : 13);
+		// Set up nested elements
+		const origElem = input_params.elems[0];
+		newElems = [
+			{
+				elem: origElem, 
+				interval: [0,1], 
+				duration: duration, 
+				reduce: origElem.reduce
+			}
+		];
+		// Replicate nested elems for all variables, if requested for a single grid point
+		if (origElem.name === 'all') {
+			let nestedElem = {...newElems[0].elem, name: 'maxt', reduce: elements[0].reduce};
+			newElems[0] = {...newElems[0], elem:nestedElem, reduce: elements[0].reduce};
+			['mint','avgt','pcpn'].forEach((elem,i) => {
+				nestedElem = {...newElems[0].elem, name: elem, reduce: elements[i+1].reduce};
+				newElems.push({...newElems[0], elem: nestedElem, reduce: elements[i+1].reduce});
+			});
+		}
 	}
 
-	// Add actual elems as modified above to paramenters object
-	paramsToSubmit.elems = newElems;
+	// Add  elems as modified above to paramenters object
+	paramsToSubmit = {...paramsToSubmit, elems: newElems}
 
 	// send just date instead of sdate and edate.
-	const newDate = input_params.elems[0].interval.length === 2 ? input_params.edate.slice(0, 7) : input_params.edate;
+	const newDate = paramsToSubmit.elems[0].interval.length === 2 ? input_params.edate.slice(0, 7) : input_params.edate;
 	paramsToSubmit.date = newDate;
 
 	// areaDef is type (state, loc, bbox) and value of area of interest.

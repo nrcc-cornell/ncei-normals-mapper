@@ -111,9 +111,11 @@ const Main = () => {
         <main id="maincontent">
           <div className={classes.drawerHeader}  />
           <div className={clsx(classes.content, { [classes.contentShift]: open, })}>
-            {viewMap &&
-              <GetResults />
-            }
+            <GetResults 
+              inputParams = {inputParams}
+              updateLevels = {updateLevels}
+              viewMap = {viewMap}
+            />
             {!viewMap &&
               <>
                 <Typography paragraph>

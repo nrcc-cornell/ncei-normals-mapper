@@ -18,8 +18,38 @@ const elementNames = () => {
 };
 
 // month items in date selections
-const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+//const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const months = [
+    ['January',  '01', '01'],
+    ['February', '02', '02'],
+    ['March',    '03', '03'],
+    ['April',    '04', '04'],
+    ['May',      '05', '05'],
+    ['June',     '06', '06'],
+    ['July',     '07', '07'],
+    ['August',   '08', '08'],
+    ['September','09', '09'],
+    ['October',  '10', '10'],
+    ['November', '11', '11'],
+    ['December', '12', '12'],
+];
 
+// month abbreviations
+const monthAbbs = [
+    {value: '01', label: 'Jan'}, 
+    {value: '02', label: 'Feb'}, 
+    {value: '03', label: 'Mar'}, 
+    {value: '04', label: 'Apr'}, 
+    {value: '05', label: 'May'}, 
+    {value: '06', label: 'Jun'},
+    {value: '07', label: 'Jul'}, 
+    {value: '08', label: 'Aug'}, 
+    {value: '09', label: 'Sep'}, 
+    {value: '10', label: 'Oct'}, 
+    {value: '11', label: 'Nov'}, 
+    {value: '12', label: 'Dec'}
+]
+  
 // seasons items in date selections
 const seasons = [
     ['Winter', '12', '02'],
@@ -127,4 +157,4 @@ const infoText = {
     colors: 'Color map not defined for this number of levels.',
 };
 
-export {elements, elementNames, regions, months, seasons, default_params, default_imageParams, default_levels, default_colors, drawerWidth, infoText, maxbbox};
+export {elements, elementNames, regions, months, monthAbbs, seasons, default_params, default_imageParams, default_levels, default_colors, drawerWidth, infoText, maxbbox};
