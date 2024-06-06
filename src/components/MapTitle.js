@@ -35,10 +35,12 @@ const MapTitle = (props) => {
 
 	return (
 		<div className={classes.titleContainer}>
-			<Typography variant="subtitle1">
-				{selectedDuration === 1 ? selectedInterval : ""}
-				{selectedName} 
-			</Typography>
+			{submittedParams.output !== 'json' &&
+				<Typography variant="subtitle1">
+					{selectedDuration === 1 ? selectedInterval : ""}
+					{selectedName} 
+				</Typography>
+			}
 			{selectedDuration > 1 &&
 				<Typography variant="subtitle1">
 				   {selectedStart} through {selectedDate} ({selectedDuration} {selectedUnits})

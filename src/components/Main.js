@@ -124,10 +124,9 @@ const Main = () => {
             <>
               <Typography paragraph>
                 Climate Normals are three-decade averages of climatological variables including temperature and precipitation. 
-                These normals are updated once every 10 years. This initial release of 
-                the 1991-2020 gridded 
+                These normals are updated once every 10 years. The 1991-2020 gridded 
                 <a href="https://www.ncei.noaa.gov/products/us-climate-normals" target="_blank" rel="noreferrer"> U.S. climate normals</a> dataset 
-                from the <a href="https://www.ncei.noaa.gov/" target="_blank" rel="noreferrer">National Centers for Environmental Information</a> contains monthly normals of temperature (maximum, miminum, average) and precipitation for the conterminous 
+                from the <a href="https://www.ncei.noaa.gov/" target="_blank" rel="noreferrer">National Centers for Environmental Information</a> contains daily and monthly normals of temperature (maximum, miminum, average) and precipitation for the conterminous 
                 United States.
               </Typography>
                               
@@ -135,10 +134,6 @@ const Main = () => {
                 To view the data contained in the gridded climate normals dataset, set your desired options in the
                 navigation pane and click the "Submit Request" button to view the results. Buttons will be provided below each
                 resulting product to allow you to download the data in a variety of formats.
-              </Typography>
-
-              <Typography>
-                Additional map customization will be added in the next version of this application.
               </Typography>
               
               <footer className={classes.footerContainer}>
